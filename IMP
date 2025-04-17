@@ -37,9 +37,9 @@ Issue/Return - Emp, Party
 
 
 
-------------------------------  Query ---------------------------
+------------------------------  SQL ---------------------------
 SELECT :-
-    db.query("SELECT * QUERY", (err, result) => {
+    db.query("SELECT * FROM QUERY", (err, result) => {
         if (err) {
             console.error("Error to Fetch", err);
             return res.status(500).json({ message: "Error while fetch" });
@@ -61,3 +61,8 @@ INSERT :-
         }
         res.status(200).json({ message: "Record Added Succesfully", resultIt: result.insertId });
     });
+
+
+- If you always want IDATE to automatically use the current date/time when a row is inserted :-
+ALTER TABLE rissue
+MODIFY COLUMN IDATE DATETIME DEFAULT CURRENT_TIMESTAMP;

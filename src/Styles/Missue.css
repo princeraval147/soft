@@ -1,0 +1,6 @@
+.managerTable input,
+th,
+select {
+    /* border: 3px solid red; */
+    width: 65px;
+}

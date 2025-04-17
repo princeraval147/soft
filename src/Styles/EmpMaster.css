@@ -1,0 +1,160 @@
+.empContainer {
+    max-width: 800px;
+    margin: auto;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+.empForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+}
+
+.row label {
+    min-width: 100px;
+    font-weight: bold;
+}
+
+.row input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.row select {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.rowCheckbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.idInput {
+    width: 50px !important;
+    flex: unset !important;
+}
+
+.managerSelect {
+    min-width: 250px;
+    padding: 0.4rem;
+}
+
+.bankDetails {
+    margin-top: 2rem;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.bankDetails legend,
+.process legend {
+    font-weight: bold;
+    padding: 0 8px;
+}
+
+.fieldset {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.process {
+    width: 30%;
+    height: 100%;
+}
+
+.process label,
+.process input {
+    cursor: pointer;
+}
+
+/* Buttons */
+.buttonGroup {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.btn {
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.saveEmpBtn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.updateBtn {
+    background-color: #2196F3;
+    color: white;
+}
+
+.deleteBtn {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+/* Table */
+.empTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+}
+
+.empTable thead {
+    background-color: #e9ecef;
+}
+
+.empTable th,
+.empTable td {
+    padding: 0.75rem;
+    text-align: left;
+}
+
+.empTable tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+
+@media (max-width: 768px) {
+    .fieldset {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .process,
+    .bankDetails {
+        width: 100%;
+    }
+}

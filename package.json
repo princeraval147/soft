@@ -1,0 +1,48 @@
+{
+  "name": "reactproject",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@boldreports/javascript-reporting-controls": "^8.1.5",
+    "@boldreports/react-reporting-components": "^5.4.38",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^7.0.0",
+    "ag-grid-community": "^33.2.2",
+    "ag-grid-enterprise": "^33.2.2",
+    "ag-grid-react": "^33.2.2",
+    "axios": "^1.8.3",
+    "chance": "^1.1.12",
+    "create-react-class": "^15.7.0",
+    "express": "^4.21.2",
+    "file-saver": "^2.0.5",
+    "jquery": "^3.7.1",
+    "mysql": "^2.18.1",
+    "peekdata-datagateway-api-sdk": "^3.2.5",
+    "react": "^19.0.0",
+    "react-datepicker": "^8.2.1",
+    "react-dom": "^19.0.0",
+    "react-report-builder": "^5.0.8",
+    "react-router-dom": "^6.30.0",
+    "react-table": "^7.8.0",
+    "react-virtuoso": "^4.12.6",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.21.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^15.15.0",
+    "vite": "^6.2.0"
+  }
+}

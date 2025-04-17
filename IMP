@@ -1,0 +1,23 @@
+HTTP Methods :-
+Action HTTP Method Usage in Express
+Fetch/View Data GET router.get('/employees', ...)
+insert New Record POST router.post('/employees', ...)
+Update Existing Record PUT or PATCH router.put('/employees/:id', ...) or router.patch(...)
+Delete Record DELETE router.delete('/employees/:id', ...)
+
+EMp master     ✅
+Bank master    ✅
+Party master   ✅
+Report         
+DailyStock     
+Rough          ✅
+Packet
+Barcode
+issue/Return
+Manager issue  
+Labour Process ✅
+
+Software FLow :-
+Rough Creation - Rough, RIssue, Jhangad, Planning, DJhangad, Issue, PIssue, Despatch, Outward, Party, Packet
+Packet - barcode
+Issue/Return - Emp, Party

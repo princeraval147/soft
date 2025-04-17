@@ -1,0 +1,21 @@
+.header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.links li a {
+    color: #212121;
+    text-decoration: none;
+}
+
+.links li a:hover {
+    color: black;
+    text-decoration: underline;
+}

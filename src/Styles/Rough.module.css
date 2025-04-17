@@ -1,0 +1,62 @@
+.roughForm input,
+.roughForm select {
+    width: 80px;
+}
+
+.roughForm tbody th {
+    width: auto;
+}
+
+.makableRough thead tr th{
+    width: auto;
+    padding: 10px;
+}
+
+.formRow {
+    display: flex;
+    /* flex-wrap: wrap; */
+    /* gap: 1rem; */
+    margin-bottom: 1rem;
+}
+
+.formRow label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    min-width: 150px;
+    font-weight: 500;
+}
+
+.roughTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.roughTable th,
+.roughTable td {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.submitBtn {
+    padding: 0.5rem 1rem;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.submitBtn:hover {
+    background-color: #1d4ed8;
+}
+
+.checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}

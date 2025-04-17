@@ -1,0 +1,85 @@
+/* .labourTable input {
+    width: 60px;
+}
+
+.labourTable thead th{
+    width: auto;
+} */
+
+.labour {
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 16px;
+    /* max-width: 1000px; */
+    /* margin: 0 auto; */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.labour h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+}
+
+.labourTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: #fff;
+}
+
+.labourTable th,
+.labourTable td {
+    border: 1px solid #ccc;
+    padding: 0.6rem;
+    text-align: center;
+}
+
+.labourTable th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+    color: #333;
+}
+
+.labourTable tbody tr:nth-child(even) {
+    background-color: #f7f7f7;
+}
+
+.submitCol{
+    width: 60px;
+}
+
+.labourTable input[type="number"],
+.labourTable select {
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 80px;
+    font-size: 0.9rem;
+}
+
+.labourTable input[type="submit"] {
+    padding: 0.5rem 1.2rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.labourTable input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.labourTable input[type="radio"] {
+    margin-right: 0.3rem;
+}
+
+.labourTable label {
+    margin-right: 1.5rem;
+    font-weight: 500;
+    color: #444;
+}

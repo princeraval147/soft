@@ -21,3 +21,43 @@ Software FLow :-
 Rough Creation - Rough, RIssue, Jhangad, Planning, DJhangad, Issue, PIssue, Despatch, Outward, Party, Packet
 Packet - barcode
 Issue/Return - Emp, Party
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+------------------------------  Query ---------------------------
+SELECT :-
+    db.query("SELECT * QUERY", (err, result) => {
+        if (err) {
+            console.error("Error to Fetch", err);
+            return res.status(500).json({ message: "Error while fetch" });
+        }
+        return res.status(200).json(result);
+    });
+
+
+
+INSERT :-
+    const {
+        Party
+    } = req.body;
+    const SQL = "INSERT INTO packet (PARTY) VALUES(?)";
+    db.query(SQL, [Party], (err, result) => {
+        if (err) {
+            console.error("Error while inserting Record", err);
+            res.status(500).json({ message: "Can't insert Data into Table" });
+        }
+        res.status(200).json({ message: "Record Added Succesfully", resultIt: result.insertId });
+    });

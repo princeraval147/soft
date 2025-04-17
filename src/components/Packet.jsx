@@ -45,6 +45,8 @@ const Packet = () => {
             });
     }
 
+
+    
     useEffect(() => {
         fetchPacket();
     }, []);

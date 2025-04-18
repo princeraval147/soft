@@ -32,6 +32,7 @@ const {
     rough,
     addPacket,
     Packets,
+    deletePacket,
     getKapan,
     getNextBarcode,
     AllPackets,
@@ -40,7 +41,8 @@ const {
     getIssue,
     getEmpByProcess,
     getPartyByProcess,
-    updateIssueReturn
+    updateIssueReturn,
+    printBarcode
 } = require('../controller/AllController');
 
 
@@ -95,6 +97,7 @@ router.get("/api/rough/:kapan", getKapan);
 router.get("/api/packet", AllPackets);
 router.get("/api/packet/:kapan", Packets);
 router.get("/api/max-barcode", getNextBarcode);
+router.delete("/api/delete-packet/:packetId", deletePacket);
 
 //  Issue / Return
 router.get("/api/emp/manager", getEmpManager);
@@ -103,6 +106,10 @@ router.get("/api/get/issue", getIssue);
 router.post("/api/empbyprocess", getEmpByProcess);
 router.post("/api/partybyprocess", getPartyByProcess);
 
+//  Barcode
+router.post("/api/print-label", printBarcode);
+
+//issue return
 router.put("/api/update-issue", (req, res) => {
     const { barcode, rwgt, remark } = req.body;
     const sql = "UPDATE rissue SET RWGT = ?, REMARK = ? WHERE BARCODE = ?";

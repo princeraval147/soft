@@ -1,4 +1,6 @@
 const db = require('../config/db');
+const fs = require('fs');
+const path = require('path');
 
 // GLobarl
 exports.getProcess = (req, res) => {
@@ -474,6 +476,7 @@ exports.rough = (req, res) => {
     });
 }
 
+// Packet Creation
 exports.addPacket = (req, res) => {
     const {
         Party,
@@ -519,6 +522,19 @@ exports.AllPackets = (req, res) => {
             return res.status(500).json({ message: "Error while fetch Packet" });
         }
         return res.status(200).json(result);
+    });
+}
+
+exports.deletePacket = (req, res) => {
+    // const {pkt} = req.body;
+    const packetId = req.params.packetId;
+    db.query("DELETE FROM packet WHERE PKT = ?", [packetId], (err, result) => {
+        if (err) {
+            console.error("Error to Delete Packet", err);
+            return res.status(500).json({ message: "Error While Delete Packet" });
+        }
+        // return res.status(200).json(result)
+        res.send("Packet deleted successfully.");
     });
 }
 
@@ -658,5 +674,44 @@ exports.getPartyByProcess = (req, res) => {
 
 
 // exports.updateIssueReturn = (req, res) => {
-    
+
 // }
+
+//  barcode print
+exports.printBarcode = (req, res) => {
+    // tag is pkt number
+    const { barcode, kapan, tag, date } = req.body;
+    const formatedDate = new Date(date).toLocaleDateString('en-GB'); // gives dd/mm/yyyy
+    const displayDate = formatedDate.replace(/\//g, '-'); // change to dd-mm-yyyy
+    if (!barcode || !kapan || !tag || !date) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+    const content = `
+SIZE 42.5 mm, 20 mm
+DIRECTION 0,0
+REFERENCE 0,0
+OFFSET 0 mm
+SET PEEL OFF
+SET CUTTER OFF
+SET PARTIAL_CUTTER OFF
+SET TEAR ON
+CLS
+BARCODE 305,103,"39",70,0,180,1,3,"${barcode}"
+CODEPAGE 1252
+TEXT 262,25,"1",180,1,1,"${barcode}"
+TEXT 305,139,"ROMAN.TTF",180,1,12,"${kapan}-${tag}"
+TEXT 95,139 ,"ROMAN.TTF",180,1,12,"${displayDate}"
+PRINT 1,1
+`;
+    try {
+        const filePath = path.join(__dirname, 'labels', `${barcode}.prn`);
+        // Make sure the labels folder exists
+        fs.mkdirSync(path.dirname(filePath), { recursive: true });
+        fs.writeFileSync(filePath, content.trim(), 'utf8');
+        console.log(`✅ Generated: ${filePath}`);
+        res.json({ success: true, path: filePath });
+    } catch (err) {
+        console.error('❌ Failed to generate PRN:', err);
+        res.status(500).json({ error: 'Server error while creating PRN file' });
+    }
+}

@@ -12,6 +12,62 @@ exports.getProcess = (req, res) => {
     });
 }
 
+exports.getShape = (req, res) => {
+    db.query("SELECT * FROM SHAPE", (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({ error: "Faild to fetch Shape" });
+        } else {
+            res.status(200).json(result);
+        }
+    });
+}
+
+exports.getCut = (req, res) => {
+    db.query("SELECT * FROM CUT", (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({ error: "Faild to fetch Shape" });
+        } else {
+            res.status(200).json(result);
+        }
+    });
+}
+
+exports.getColor = (req, res) => {
+    db.query("SELECT * FROM color", (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({ error: "Faild to fetch Color" });
+        } else {
+            res.status(200).json(result);
+        }
+    });
+}
+
+exports.getClarity = (req, res) => {
+    db.query("SELECT * FROM clarity", (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({ error: "Faild to fetch Clarity" });
+        } else {
+            res.status(200).json(result);
+        }
+    });
+}
+
+exports.getFL = (req, res) => {
+    db.query("SELECT * FROM fl", (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({ error: "Faild to fetch FL" });
+        } else {
+            res.status(200).json(result);
+        }
+    });
+}
+
+//  PARTY MASTER
 exports.parties = (req, res) => {
     db.query("SELECT * FROM party", (err, result) => {
         if (err) {
@@ -64,38 +120,7 @@ exports.deleteParty = (req, res) => {
     });
 }
 
-exports.getShape = (req, res) => {
-    db.query("SELECT * FROM SHAPE", (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(500).json({ error: "Faild to fetch Shape" });
-        } else {
-            res.status(200).json(result);
-        }
-    });
-}
 
-exports.getCut = (req, res) => {
-    db.query("SELECT * FROM CUT", (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(500).json({ error: "Faild to fetch Shape" });
-        } else {
-            res.status(200).json(result);
-        }
-    });
-}
-
-exports.getColor = (req, res) => {
-    db.query("SELECT * FROM color", (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(500).json({ error: "Faild to fetch Shape" });
-        } else {
-            res.status(200).json(result);
-        }
-    });
-}
 
 
 // Not Working
@@ -116,16 +141,16 @@ exports.addLabour = (req, res) => {
         srNo,
         Party,
         LType,
-        Process,
         Type,
+        Process,
         Shape,
         Cut,
         From,
         To,
         Rate
     } = req.body;
-    const SQL = "INSERT INTO PRATE (SRNO, PARTY, LTYPE, TYPE, PROCESS, SHAPE, CUT, FROMSIZE, TOSIZE, RATE) VALUES(?,?,?,?,?,?,?,?,?,?)";
-    db.query(SQL, [srNo, Party, LType, Process, Type, Shape, Cut, From, To, Rate], (err, result) => {
+    const SQL = "INSERT INTO PRATE (SRNO, PARTY, LTYPE,TYPE, PROCESS, SHAPE, CUT, FROMSIZE, TOSIZE, RATE) VALUES(?,?,?,?,?,?,?,?,?,?)";
+    db.query(SQL, [srNo, Party, LType, Type, Process, Shape, Cut, From, To, Rate], (err, result) => {
         if (err) {
             console.log("Error while insert into Labour", err);
             res.status(500).json({ error: "Faild to insert data" });
@@ -478,7 +503,17 @@ exports.addPacket = (req, res) => {
 
 exports.Packets = (req, res) => {
     const { kapan } = req.params;
-    db.query("SELECT * FROM Packet WHERE KAPAN = ?", [kapan], (err, result) => {
+    db.query("SELECT * FROM packet WHERE KAPAN = ?", [kapan], (err, result) => {
+        if (err) {
+            console.error("Error to Fetch Packets", err);
+            return res.status(500).json({ message: "Error while fetch Packet" });
+        }
+        return res.status(200).json(result);
+    });
+}
+
+exports.AllPackets = (req, res) => {
+    db.query("SELECT * FROM packet", (err, result) => {
         if (err) {
             console.error("Error to Fetch Packets", err);
             return res.status(500).json({ message: "Error while fetch Packet" });
@@ -496,3 +531,132 @@ exports.getKapan = async (req, res) => {
         res.json(result);
     });
 }
+
+// exports.getNextBarcode = async (req, res) => {
+//     db.query("SELECT BARCODE FROM packet ORDER BY BARCODE DESC LIMIT 1", (err, result) => {
+//         if (err) {
+//             console.error("Error to Fetch Barcode", err);
+//             return res.status(500).json({ message: "Error while fetch Barcode" });
+//         }
+//         return res.status(200).json(result);
+//     });
+// }
+
+exports.getNextBarcode = async (req, res) => {
+    db.query("SELECT BARCODE FROM packet ORDER BY BARCODE DESC LIMIT 1", (err, result) => {
+        if (err) {
+            console.error("Error to Fetch Barcode", err);
+            return res.status(500).json({ message: "Error while fetching Barcode" });
+        }
+        if (result.length > 0) {
+            return res.status(200).json({ Barcode: result[0].BARCODE });
+        } else {
+            return res.status(200).json({ Barcode: null });
+        }
+    });
+};
+
+exports.getEmpManager = async (req, res) => {
+    // db.query("SELECT * FROM emp WHERE MANAGER = 'Y'", (err, result) => {
+    db.query("SELECT e.MID, e.ENAME, ep.PROCESS FROM emp e JOIN empprocess ep ON e.MID = ep.EMPID AND e.MANAGER = 'Y'", (err, result) => {
+        if (err) {
+            console.error("Error to Fetch Emp Manager", err);
+            return res.status(500).json({ message: "Error while fetch EmpManager" });
+        }
+        return res.status(200).json(result);
+    });
+}
+
+exports.addIssue = async (req, res) => {
+    // const {
+    //     Party
+    // } = req.body;
+    // const SQL = "INSERT INTO rissue (PARTY) VALUES(?)";
+    // db.query(SQL, [Party], (err, result) => {
+    //     if (err) {
+    //         console.error("Error while inserting issue Record", err);
+    //         res.status(500).json({ message: "Can't insert Data into rissue" });
+    //     }
+    //     res.status(200).json({ message: "issue Record Added Succesfully", resultIt: result.insertId });
+    // });
+
+    const {
+        barcode, Process, kapan, lot, tag, weight,
+        shape, color, clarity, cut, pol,
+        sym, floro, ewgt, rwgt, saw, mid, remark
+    } = req.body
+    const checkQuery = "SELECT * FROM issue WHERE BARCODE = ?";
+    db.query(checkQuery, [barcode], (checkErr, result) => {
+        if (checkErr) return res.status(500).send("Error checking barcode");
+
+        if (result.length > 0) {
+            return res.status(400).send("Barcode already exists");
+        }
+        const sql = `INSERT INTO rissue (
+        BARCODE, PROCESS, KAPAN, PACKET, TAG, IWGT, ISHAPE, ICOLOR,
+        ICLARITY, ICUT, IPOL, ISYM, IFL, EWGT, RWGT, SAW, MID, REMARK
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        db.query(sql, [
+            barcode, Process, kapan, lot, tag, weight,
+            shape, color, clarity, cut, pol,
+            sym, floro, ewgt, rwgt, saw, mid, remark
+        ], (err, result) => {
+            if (err) {
+                console.log("Error inserting:", err);
+                return res.status(500).send("Insert failed");
+            }
+            res.send("Insert successful");
+        });
+    });
+}
+
+exports.getIssue = (req, res) => {
+    db.query("SELECT * FROM rissue", (err, result) => {
+        if (err) {
+            console.error("Error to Fetch issue data", err);
+            return res.status(500).json({ message: "Error while fetch issue data" });
+        }
+        return res.status(200).json(result);
+    });
+}
+
+exports.getEmpByProcess = (req, res) => {
+    const { Mid, Process } = req.body;
+    const SQL = "SELECT e.* FROM emp e JOIN empprocess ep ON e.EMPID = ep.EMPID WHERE e.MID = ? AND ep.PROCESS = ? AND e.MANAGER = 'N';";
+    db.query(SQL, [Mid, Process], (err, result) => {
+        if (err) {
+            console.error("Error to Fetch", err);
+            return res.status(500).json({ message: "Error while fetch" });
+        }
+        return res.status(200).json(result);
+    });
+}
+
+exports.getPartyByProcess = (req, res) => {
+    const { Process } = req.body;
+    const query = `
+        SELECT * FROM prate WHERE PROCESS = ?
+    `;
+    db.query(query, [Process], (err, results) => {
+        if (err) {
+            console.error("Error fetching parties by process:", err);
+            return res.status(500).send("Server error");
+        }
+        res.json(results);
+    });
+}
+
+// app.get("/api/getIssueByBarcode/:barcode", (req, res) => {
+//     const { barcode } = req.params;
+//     const query = "SELECT * FROM issue WHERE BARCODE = ?";
+//     db.query(query, [barcode], (err, results) => {
+//       if (err) return res.status(500).send(err);
+//       if (results.length === 0) return res.status(404).send("Not found");
+//       res.json(results[0]);
+//     });
+//   });
+
+
+// exports.updateIssueReturn = (req, res) => {
+    
+// }

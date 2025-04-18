@@ -5,8 +5,10 @@ const {
     DailyStock,
     getProcess,
     getShape,
-    getCut,
     getColor,
+    getClarity,
+    getCut,
+    getFL,
     addParty,
     addLabour,
     showLabour,
@@ -30,7 +32,15 @@ const {
     rough,
     addPacket,
     Packets,
-    getKapan
+    getKapan,
+    getNextBarcode,
+    AllPackets,
+    getEmpManager,
+    addIssue,
+    getIssue,
+    getEmpByProcess,
+    getPartyByProcess,
+    updateIssueReturn
 } = require('../controller/AllController');
 
 
@@ -40,6 +50,8 @@ router.get("/api/process", getProcess);
 router.get("/api/shape", getShape);
 router.get("/api/cut", getCut);
 router.get("/api/color", getColor);
+router.get("/api/clarity", getClarity);
+router.get("/api/fl", getFL);
 
 //  Party Master
 router.post("/api/add-party", addParty);
@@ -80,7 +92,25 @@ router.get("/api/rough", rough);
 // Packet Creation
 router.post("/api/add-packet", addPacket);
 router.get("/api/rough/:kapan", getKapan);
-router.get("/api/packet", Packets);
+router.get("/api/packet", AllPackets);
+router.get("/api/packet/:kapan", Packets);
+router.get("/api/max-barcode", getNextBarcode);
+
+//  Issue / Return
+router.get("/api/emp/manager", getEmpManager);
+router.post("/api/add/issue", addIssue);
+router.get("/api/get/issue", getIssue);
+router.post("/api/empbyprocess", getEmpByProcess);
+router.post("/api/partybyprocess", getPartyByProcess);
+
+router.put("/api/update-issue", (req, res) => {
+    const { barcode, rwgt, remark } = req.body;
+    const sql = "UPDATE rissue SET RWGT = ?, REMARK = ? WHERE BARCODE = ?";
+    db.query(sql, [rwgt, remark, barcode], (err, result) => {
+        if (err) return res.status(500).send("Update failed");
+        res.send("Updated successfully");
+    });
+});
 
 // Route to update employee
 router.put("/api/update-emp/:EmpId", (req, res) => {
@@ -133,9 +163,5 @@ router.put("/api/update-empprocess", (req, res) => {
         }
     });
 });
-
-
-
-
 
 module.exports = router;

@@ -11,6 +11,7 @@ import EmpMaster from "./components/EmpMaster";
 import BankMaster from "./components/BankMaster";
 import LabourProcess from "./components/LabourProcess";
 import Packet from "./components/Packet";
+import Issue from "./components/Issue";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -21,6 +22,7 @@ const router = createBrowserRouter(
             <Route path="emp" element={<EmpMaster />} />
             <Route path="rough" element={<Rough />} />
             <Route path="packet" element={<Packet />} />
+            <Route path="Issue" element={<Issue />} />
             <Route path="polish" element={<Polish />} />
             <Route path="manager-issue" element={<ManagerIssue />} />
             <Route path="labour-process" element={<LabourProcess />} />

@@ -66,3 +66,6 @@ INSERT :-
 - If you always want IDATE to automatically use the current date/time when a row is inserted :-
 ALTER TABLE rissue
 MODIFY COLUMN IDATE DATETIME DEFAULT CURRENT_TIMESTAMP;
+
+- To reset auto increment after delete data from table :-
+ALTER TABLE rissue AUTO_INCREMENT = 1;

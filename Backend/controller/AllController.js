@@ -390,7 +390,7 @@ exports.showBank = (req, res) => {
     });
 }
 
-// In your controller or route
+// 
 exports.getBankDetailsByIFSC = (req, res) => {
     const { ifsc } = req.params;
     const SQL = "SELECT BANK, ADDRESS FROM BANK WHERE IFSC = ?";
@@ -627,7 +627,17 @@ exports.addIssue = async (req, res) => {
 }
 
 exports.getIssue = (req, res) => {
-    db.query("SELECT * FROM rissue", (err, result) => {
+    db.query("SELECT * FROM rissue WHERE RWGT = 0", (err, result) => {
+        if (err) {
+            console.error("Error to Fetch issue data", err);
+            return res.status(500).json({ message: "Error while fetch issue data" });
+        }
+        return res.status(200).json(result);
+    });
+}
+
+exports.getReturn = (req, res) => {
+    db.query("SELECT * FROM rissue WHERE RWGT > 0", (err, result) => {
         if (err) {
             console.error("Error to Fetch issue data", err);
             return res.status(500).json({ message: "Error while fetch issue data" });

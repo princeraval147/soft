@@ -39,6 +39,7 @@ const {
     getEmpManager,
     addIssue,
     getIssue,
+    getReturn,
     getEmpByProcess,
     getPartyByProcess,
     updateIssueReturn,
@@ -103,6 +104,7 @@ router.delete("/api/delete-packet/:packetId", deletePacket);
 router.get("/api/emp/manager", getEmpManager);
 router.post("/api/add/issue", addIssue);
 router.get("/api/get/issue", getIssue);
+router.get("/api/get/return", getReturn);
 router.post("/api/empbyprocess", getEmpByProcess);
 router.post("/api/partybyprocess", getPartyByProcess);
 

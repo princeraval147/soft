@@ -51,19 +51,6 @@ const Issue = () => {
 
 
 
-
-
-
-    // Process selection + filter
-    // const [selectedProcess, setSelectedProcess] = useState('');
-    // const selectedProcess = formData.process;
-    // const filteredManagers = empmanager.filter((mgr) => mgr.PROCESS === selectedProcess);
-
-
-
-
-
-
     const [formData, setFormData] = useState({
         barcode: '',
         Process: '',
@@ -86,27 +73,20 @@ const Issue = () => {
     });
     const selectedProcess = formData.Process;
     const filteredManagers = empmanager.filter((mgr) => mgr.PROCESS === selectedProcess);
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setFormData(prev => ({ ...prev, [name]: value }));
-    // };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-
         const updatedForm = {
             ...formData,
             [name]: value
         };
-
         setFormData(updatedForm);
-
         if (name === 'mid' || name === 'Process') {
             fetchFilteredEmployees(
                 name === 'mid' ? value : updatedForm.mid,
                 name === 'Process' ? value : updatedForm.Process
             );
         }
-
         // Prevent RWGT from being greater than IWGT
         if (name === "rwgt") {
             const iwgt = parseFloat(formData.weight) || 0;
@@ -114,39 +94,6 @@ const Issue = () => {
             if (newRwgt > iwgt) return; // Don't update if rwgt > iwgt
         }
     };
-
-    // const handleIssue = async (e) => {
-    //     e.preventDefault();
-    //     try {
-    //         await Axios.post("http://localhost:3002/api/add/issue", formData);
-    //         alert("Data inserted successfully!");
-    //         // Optionally reset form
-    //         setFormData({
-    //             barcode: '',
-    //             Process: '',
-    //             kapan: '',
-    //             lot: '',
-    //             tag: '',
-    //             weight: '',
-    //             shape: '',
-    //             color: '',
-    //             clarity: '',
-    //             cut: '',
-    //             pol: '',
-    //             sym: '',
-    //             floro: '',
-    //             ewgt: '',
-    //             rwgt: '',
-    //             saw: '',
-    //             mid: '',
-    //             remark: '',
-    //         });
-    //         fetchIssueData();
-    //     } catch (error) {
-    //         console.error("Error inserting data:", error);
-    //         alert("Failed to insert data.");
-    //     }
-    // };
 
     const [issueMap, setIssueMap] = useState({});
     const [issueData, setIssueData] = useState([]);
@@ -173,18 +120,6 @@ const Issue = () => {
 
 
     const [filteredEmployees, setFilteredEmployees] = useState([]);
-    // const fetchFilteredEmployees = async (mid, process) => {
-    //     if (!mid || !process) return;
-    //     try {
-    //         const response = await Axios.post("http://localhost:3002/api/empbyprocess", {
-    //             Mid: mid,
-    //             Process: process
-    //         });
-    //         setFilteredEmployees(response.data);
-    //     } catch (error) {
-    //         console.error("Error fetching employees by manager and process:", error);
-    //     }
-    // };
     const fetchFilteredEmployees = async (mid, process) => {
         if (!process) return;
         try {
@@ -212,43 +147,7 @@ const Issue = () => {
 
     const rwgtRef = useRef(null);
     const barcodeRef = useRef(null);
-    // const handleBarcodeEnter = async (e) => {
-    //     if (e.key === "Enter" && document.getElementById("return").checked) {
-    //         e.preventDefault();
-    //         try {
-    //             const response = await axios.get(`http://localhost:3001/api/getIssueByBarcode/${formData.barcode}`);
-    //             const issueData = response.data;
-    //             if (issueData) {
-    //                 setFormData({
-    //                     ...formData,
-    //                     kapan: issueData.KAPAN || '',
-    //                     lot: issueData.LOT || '',
-    //                     tag: issueData.TAG || '',
-    //                     weight: issueData.WEIGHT || '',
-    //                     shape: issueData.SHAPE || '',
-    //                     color: issueData.COLOR || '',
-    //                     clarity: issueData.CLARITY || '',
-    //                     cut: issueData.CUT || '',
-    //                     pol: issueData.POL || '',
-    //                     sym: issueData.SYM || '',
-    //                     floro: issueData.FLORO || '',
-    //                     ewgt: issueData.EWGT || '',
-    //                     rwgt: '', // RWGT should be empty so user can enter it
-    //                     remark: ''
-    //                 });
-    //                 // Focus on RWGT input
-    //                 setTimeout(() => {
-    //                     rwgtRef.current?.focus();
-    //                 }, 100);
-    //             } else {
-    //                 alert("No issue data found for the given barcode.");
-    //             }
-    //         } catch (error) {
-    //             console.error("Error fetching issue data:", error);
-    //             alert("Failed to fetch issue data.");
-    //         }
-    //     }
-    // };
+
     const handleBarcodeEnter = async (e) => {
         if ((e.key === "Enter" || e.key === "Tab") && document.getElementById("return").checked) {
             e.preventDefault();
@@ -300,73 +199,6 @@ const Issue = () => {
 
 
     const [mode, setMode] = useState("issue"); // 'issue' or 'return'
-    // const handleIssue = async (e) => {
-    //     e.preventDefault();
-    //     const existing = issueData.find(issue => issue.BARCODE === formData.barcode);
-    //     if (mode === "issue" && existing) {
-    //         // alert("Barcode already exists. Please use a unique one.");
-    //         alert("Packet Aleady Issue");
-    //         setTimeout(() => {
-    //             barcodeRef.current?.focus();
-    //         }, 100);
-    //         return;
-    //     }
-    //     // 🚫 Prevent RWGT > IWGT
-    //     if (mode === "return" && parseFloat(formData.rwgt) > parseFloat(formData.weight)) {
-    //         alert("Return weight cannot be more than issue weight.");
-    //         return;
-    //     }
-    //     if (parseFloat(formData.rwgt) < 0) {
-    //         alert("Return weight cannot be negative.");
-    //         return;
-    //     }
-    //     const matchedIssue = issueMap[formData.barcode];
-    //     // console.log(matchedIssue);
-    //     console.log("Barcode entered:", formData.barcode);
-    //     console.log("All barcodes in map:", Object.keys(issueMap));
-    //     console.log("Matched issue:", matchedIssue);
-
-    //     if (parseFloat(matchedIssue.rwgt) > 0) {
-    //         alert("Packet already returned.");
-    //         setTimeout(() => {
-    //             barcodeRef.current?.focus();
-    //         }, 100);
-    //         return;
-    //     }
-    //     try {
-    //         if (mode === "issue") {
-    //             await Axios.post("http://localhost:3002/api/add/issue", formData);
-    //             alert("Data inserted successfully!");
-    //         } else {
-    //             await Axios.put("http://localhost:3002/api/update-issue", formData);
-    //             alert("Return successfully!");
-    //         }
-    //         setFormData({
-    //             barcode: '',
-    //             Process: '',
-    //             kapan: '',
-    //             lot: '',
-    //             tag: '',
-    //             weight: '',
-    //             shape: '',
-    //             color: '',
-    //             clarity: '',
-    //             cut: '',
-    //             pol: '',
-    //             sym: '',
-    //             floro: '',
-    //             ewgt: '',
-    //             rwgt: '',
-    //             saw: '',
-    //             mid: '',
-    //             remark: '',
-    //         });
-    //         fetchIssueData();
-    //     } catch (error) {
-    //         console.error("Error submitting data:", error);
-    //         alert("Failed to submit data.");
-    //     }
-    // };
 
     const handleIssue = async (e) => {
         e.preventDefault();
@@ -404,7 +236,6 @@ const Issue = () => {
 
             const iwgt = parseFloat(formData.weight || 0);
             const rwgt = parseFloat(formData.rwgt || 0);
-
             if (rwgt > iwgt) {
                 alert("Return weight cannot be more than issue weight.");
                 return;
@@ -419,7 +250,10 @@ const Issue = () => {
                 await Axios.post("http://localhost:3002/api/add/issue", formData);
                 alert("Issued successfully!");
             } else {
-                await Axios.put("http://localhost:3002/api/update-issue", formData);
+                await Axios.put("http://localhost:3002/api/update-issue", {
+                    ...formData,
+                    rDate: new Date().toISOString() // <-- attach return date
+                });
                 alert("Returned successfully!");
             }
             // Reset form

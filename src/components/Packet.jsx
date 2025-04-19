@@ -45,9 +45,11 @@ const Packet = () => {
     //             console.error("Error fetching Packet:", error);
     //         });
     // }
+    const [AllPackets, setAllPackets] = useState([]);
     const fetchAllPacket = async () => {
         try {
             const response = await Axios.get("http://localhost:3002/api/packet");
+            setAllPackets(response.data);
             const lastPkt = response.data.length > 0
                 ? parseInt(response.data[response.data.length - 1].PKT) || 0
                 : 0;
@@ -57,6 +59,11 @@ const Packet = () => {
             console.error("Server error at Full Packet", error);
         }
     }
+    // const Barcode = AllPackets.BARCODE;
+    // console.log("All Packets = ", Barcode);
+
+
+
 
     const fetchPacket = (kapanID) => {
         if (!kapanID) return;
@@ -160,7 +167,8 @@ const Packet = () => {
         e.preventDefault();
 
         const pcsAvailable = parseInt(formData.pcs);
-        if (pktCounter > pcsAvailable) {
+        // if (pktCounter > pcsAvailable) {
+        if (packetDisplay.length >= pcsAvailable) {
             alert(`You can't add more than ${pcsAvailable} packets.`);
             return;
         }
@@ -203,6 +211,7 @@ const Packet = () => {
                 // alert("Packet data added successfully!");
                 // fetchPacket();
                 fetchPacket(formData.kapan);
+                fetchPacket();
                 // 👇 Auto-increment lot number
                 const nextLot = parseInt(packetEntry.lot) + 1;
                 setPacketEntry({
@@ -221,12 +230,44 @@ const Packet = () => {
     const totalCarat = packetDisplay.reduce((total, pkt) => total + parseFloat(pkt.CARAT || 0), 0).toFixed(2);
 
     useEffect(() => {
-        // fetchAllPacket();
+        fetchAllPacket();
         fetchPacket();
         if (formData.kapan) {
             fetchPacket(formData.kapan);
         }
     }, []);
+
+    const handleDeletePacket = async (packetId) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this packet?");
+        if (!confirmDelete) return;
+        try {
+            await Axios.delete(`http://localhost:3002/api/delete-packet/${packetId}`);
+            console.log("Packet Deleted....!", packetId);
+            fetchPacket(formData.kapan); // Refresh table after delete
+        } catch (error) {
+            console.error("Error deleting packet:", error);
+            alert("Failed to delete packet.");
+        }
+    };
+    // console.log(packetDisplay);
+
+    //print barcode
+    const handlePrintBarcode = async (packet) => {
+        const { BARCODE, KAPAN, PKT, IDATE } = packet;
+        try {
+            await Axios.post("http://localhost:3002/api/print-label", {
+                barcode: BARCODE,          // e.g., "SK000008"
+                kapan: KAPAN,              // e.g., "AA"
+                tag: PKT.toString(),       // e.g., "5"
+                date: IDATE
+            });
+            console.log(`🖨️ Printed label for: ${BARCODE}`);
+        } catch (error) {
+            console.error("❌ Error printing label:", error);
+        }
+    };
+
+
 
     return (
         <div className={styles.container}>
@@ -273,12 +314,14 @@ const Packet = () => {
                                 </td>
                                 <td>
                                     <input
-                                        type="text"
+                                        type="number"
                                         name="weight"
                                         placeholder="Weight"
                                         value={packetEntry.weight}
                                         onChange={handlePacketEntryChange}
                                         ref={weightRef}
+                                        min={0.001}
+                                        step="any"//Allow to send 0 to 1
                                     />
                                 </td>
                                 <td>
@@ -288,6 +331,7 @@ const Packet = () => {
                             <tr>
                                 <th>Lot</th>
                                 <th>Weight</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -296,6 +340,16 @@ const Packet = () => {
                                     <tr key={index + 1}>
                                         <td>{packet.PACKET}</td>
                                         <td>{packet.CARAT}</td>
+                                        <td>
+                                            <button type="button" onClick={() => handleDeletePacket(packet.PKT)}>
+                                                🗑️
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button type='button' onClick={() => handlePrintBarcode(packet)}>
+                                                Print Barcode
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))
                             }
@@ -306,9 +360,13 @@ const Packet = () => {
                                 <td style={{ fontWeight: 'bold' }}>{totalCarat}</td>
                             </tr>
                         </tfoot>
-
                     </table>
                 </form>
+                {/* {
+                    packetDisplay.map((packet) => (
+                        <button key={packet.BARCODE} onClick={() => handlePrintBarcode(packet)}>print</button>
+                    ))
+                } */}
             </div>
         </div>
     );
